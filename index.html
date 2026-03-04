@@ -30,7 +30,7 @@ footer{text-align:center;padding:30px;margin-top:50px;color:#94a3b8;}
 </head>
 <body>
 
-<nav>
+<nav id="mainNav" class="hidden">
 <h2>ANSHS SakaySalaysay</h2>
 <ul>
 <li><a onclick="showPage('home')">Home</a></li>
@@ -98,12 +98,13 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 const loginPage = document.getElementById("loginPage");
+const nav = document.getElementById("mainNav");
 const userInfo = document.getElementById("userInfo");
 
 document.getElementById("googleLogin").addEventListener("click", () => {
 const provider = new GoogleAuthProvider();
 signInWithPopup(auth, provider).then(()=>{
-location.reload(); // SAFARI FIX
+location.reload(); // Safari fix
 });
 });
 
@@ -113,11 +114,13 @@ signOut(auth).then(()=>location.reload());
 
 onAuthStateChanged(auth, (user) => {
 if (user) {
-loginPage.classList.add("hidden");
+loginPage.style.display = "none";
+nav.classList.remove("hidden");
 userInfo.innerText = user.displayName;
 showPage("home");
 } else {
-loginPage.classList.remove("hidden");
+loginPage.style.display = "flex";
+nav.classList.add("hidden");
 document.querySelectorAll("section").forEach(sec=>{
 if(sec.id !== "loginPage"){sec.classList.add("hidden");}
 });
